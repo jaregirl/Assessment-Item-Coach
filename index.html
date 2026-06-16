@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Assessment Item Coach</title>
+    <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Assessment Classes</p>
+        <h1>Assessment Item Coach</h1>
+        <p class="header-subtitle">A guided item-writing workspace developed by J. Arawiran.</p>
+      </div>
+      <div class="storage-note">
+        <span>Saved locally in this browser</span>
+        <strong id="storageCount">0 items</strong>
+      </div>
+    </header>
+
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Workflow">
+        <button class="nav-button active" data-view="workspace">Workspace</button>
+        <button class="nav-button" data-view="bank">Test Bank</button>
+        <button class="nav-button" data-view="import">CSV Import</button>
+        <button class="nav-button" data-view="export">Export</button>
+        <button class="nav-button" data-view="about">Privacy & Sources</button>
+        <div class="readiness-box">
+          <span class="label">Current Status</span>
+          <strong id="readinessStatus">Draft</strong>
+          <p id="readinessSummary">Start with a purpose, target, and item type.</p>
+        </div>
+      </aside>
+
+      <section class="view active" id="workspaceView">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">Student Path</p>
+            <h2>Build or Evaluate an Item</h2>
+          </div>
+          <div class="mode-switch" role="group" aria-label="Work mode">
+            <button class="chip active" data-mode="whole-test">Whole Test / TOS</button>
+            <button class="chip" data-mode="single-build">Build One Item</button>
+            <button class="chip" data-mode="single-evaluate">Evaluate One Item</button>
+          </div>
+        </div>
+
+        <section class="start-panel" aria-label="Start here">
+          <div>
+            <p class="eyebrow">Start Here</p>
+            <h3>What do you want to do today?</h3>
+            <p>Choose one path first. The app will show the same teacher-like questions, but the required checks will change based on your purpose.</p>
+          </div>
+          <div class="start-cards">
+            <button class="start-card active" type="button" data-mode="whole-test">
+              <strong>Use a TOS</strong>
+              <span>Build or check items for a whole test.</span>
+            </button>
+            <button class="start-card" type="button" data-mode="single-build">
+              <strong>Build one item</strong>
+              <span>Start from a target and draft one item.</span>
+            </button>
+            <button class="start-card" type="button" data-mode="single-evaluate">
+              <strong>Check one item</strong>
+              <span>Paste an existing item and review it.</span>
+            </button>
+          </div>
+        </section>
+
+        <div class="workspace-grid">
+          <form id="itemForm" class="panel form-panel">
+            <details class="form-section" open>
+              <summary>1. Purpose and Alignment</summary>
+              <label>
+                Student name
+                <input name="studentName" placeholder="Optional" />
+              </label>
+              <label>
+                Subject / course
+                <input name="subject" placeholder="Example: Assessment of Learning" />
+              </label>
+              <label>
+                Grade level / class
+                <input name="gradeLevel" placeholder="Example: BSED 3 / Grade 7" />
+              </label>
+              <label>
+                Topic
+                <input name="topic" placeholder="Example: Formative and summative assessment" />
+              </label>
+              <label>
+                Learning target / outcome
+                <textarea name="learningTarget" rows="3" placeholder="What should learners know or be able to do?"></textarea>
+              </label>
+              <label>
+                Blueprint / TOS cell
+                <input name="tosCell" placeholder="Required only for whole-test work" />
+              </label>
+            </details>
+
+            <details class="form-section">
+              <summary>2. Item Planning</summary>
+              <label>
+                Item format
+                <select name="itemFormat" id="itemFormat">
+                  <option value="Multiple Choice">Multiple Choice</option>
+                  <option value="True/False">True/False</option>
+                  <option value="Fill-in">Fill-in</option>
+                  <option value="Matching">Matching</option>
+                  <option value="Essay">Essay</option>
+                </select>
+              </label>
+              <label>
+                Target type
+                <select name="targetType" id="targetType">
+                  <option value="Knowledge">Knowledge</option>
+                  <option value="Reasoning">Reasoning</option>
+                </select>
+              </label>
+              <label>
+                Reasoning skill
+                <select name="reasoningSkill" id="reasoningSkill">
+                  <option value="">Not applicable</option>
+                  <option value="Comparing">Comparing</option>
+                  <option value="Classifying">Classifying</option>
+                  <option value="Analyzing">Analyzing</option>
+                  <option value="Inductive Reasoning">Inductive Reasoning</option>
+                  <option value="Deductive Reasoning">Deductive Reasoning</option>
+                  <option value="Evaluating">Evaluating</option>
+                </select>
+              </label>
+              <div class="hint-card" id="verbSupport">
+                Choose a reasoning skill to see suggested verbs.
+              </div>
+              <label>
+                Proposition
+                <textarea name="proposition" rows="3" placeholder="Especially important for selected-response items. Write the statement the item should assess."></textarea>
+              </label>
+              <label>
+                Knowledge needed
+                <textarea name="knowledgeNeeded" rows="3" placeholder="What previously taught knowledge is needed?"></textarea>
+              </label>
+              <label>
+                Novel situation
+                <textarea name="novelSituation" rows="3" placeholder="Required for reasoning items. What new case, example, data, or classroom situation is used?"></textarea>
+              </label>
+              <label>
+                Reasoning path / guide to correct response
+                <textarea name="reasoningPath" rows="3" placeholder="How should a proficient learner arrive at the answer?"></textarea>
+              </label>
+            </details>
+
+            <details class="form-section">
+              <summary>3. Item Draft</summary>
+              <label>
+                Stem or essay prompt
+                <textarea name="stem" rows="5" placeholder="Write the item or essay exercise here."></textarea>
+              </label>
+              <div id="selectedFields">
+                <div class="option-grid">
+                  <label>Option A <textarea name="optionA" rows="2"></textarea></label>
+                  <label>Option B <textarea name="optionB" rows="2"></textarea></label>
+                  <label>Option C <textarea name="optionC" rows="2"></textarea></label>
+                  <label>Option D <textarea name="optionD" rows="2"></textarea></label>
+                </div>
+                <label>
+                  Answer key
+                  <input name="answerKey" placeholder="Example: B" />
+                </label>
+                <label>
+                  Student distractor analysis
+                  <textarea name="distractorAnalysis" rows="4" placeholder="Why might a learner choose each wrong option?"></textarea>
+                </label>
+              </div>
+              <div id="essayFields" hidden>
+                <label>
+                  Student item-writer's own answer
+                  <textarea name="studentEssayAnswer" rows="5" placeholder="Answer your own essay exercise first."></textarea>
+                </label>
+                <label>
+                  Expected response / model answer
+                  <textarea name="expectedResponse" rows="5" placeholder="What should a strong answer include?"></textarea>
+                </label>
+                <label>
+                  Scoring guide / rubric
+                  <textarea name="rubric" rows="5" placeholder="What criteria will be scored?"></textarea>
+                </label>
+              </div>
+            </details>
+
+            <details class="form-section">
+              <summary>4. Revision Notes</summary>
+              <label>
+                Revision notes or reflection
+                <textarea name="revisionNotes" rows="4" placeholder="What did you revise, or why is no revision needed yet?"></textarea>
+              </label>
+            </details>
+
+            <div class="form-actions">
+              <button type="button" id="reviewButton">Review Item</button>
+              <button type="button" id="saveButton" class="secondary">Save to Test Bank</button>
+              <button type="reset" class="ghost">Clear Form</button>
+            </div>
+          </form>
+
+          <aside class="panel coach-panel">
+            <h3>What to Do Next</h3>
+            <div id="nextStep" class="next-step">Start with the purpose and learning target.</div>
+            <h3>Guided Review</h3>
+            <div id="coachQuestions" class="coach-list">
+              <p>Select a purpose and begin entering your item. The app will guide the review step by step.</p>
+            </div>
+            <h3>Review Results</h3>
+            <div id="reviewResults" class="review-list">
+              <p>No review yet.</p>
+            </div>
+          </aside>
+        </div>
+
+        <nav class="mobile-stepbar" aria-label="Mobile step controls">
+          <button type="button" id="mobileBackButton" class="ghost">Back</button>
+          <span id="mobileStepLabel">Step 1 of 4</span>
+          <button type="button" id="mobileNextButton">Next</button>
+        </nav>
+      </section>
+
+      <section class="view" id="bankView">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">Saved Drafts</p>
+            <h2>Test Bank</h2>
+            <p class="toolbar-note">Items at the top are the ones that may need attention first. This is not a grade.</p>
+          </div>
+          <div class="button-row">
+            <button id="refreshRankButton" class="secondary">Sort by Need for Attention</button>
+            <button id="backupButton">Save Backup File</button>
+            <button id="restoreButton" class="secondary">Open Backup File</button>
+            <input type="file" id="restoreFile" accept=".json,application/json" hidden />
+          </div>
+        </div>
+        <div class="panel form-section">
+          <p class="muted">Use a backup file when moving work between phone and desktop. DOCX/PDF is for submission; JSON backup is for continuing editable work on another device.</p>
+        </div>
+        <div id="bankList" class="bank-list"></div>
+      </section>
+
+      <section class="view" id="importView">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">Spreadsheet Entry</p>
+            <h2>CSV Import</h2>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="help-block">
+            <h3>Teacher Support Needed</h3>
+            <p>Use CSV import when students prepare items in a spreadsheet. The teacher should provide the template and explain which columns are required for the activity.</p>
+            <p>For a simple MC item, students usually need: topic, learningTarget, itemFormat, targetType, proposition, stem, optionA, optionB, optionC, optionD, answerKey, and distractorAnalysis.</p>
+            <p>For reasoning items, also include reasoningSkill, knowledgeNeeded, novelSituation, and reasoningPath.</p>
+          </div>
+          <button id="templateButton" class="secondary">Download CSV Template</button>
+          <input type="file" id="csvFile" accept=".csv,text/csv" />
+          <button id="importButton">Import CSV</button>
+          <div id="importResults" class="review-list"></div>
+        </div>
+      </section>
+
+      <section class="view" id="exportView">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">Formatted Output</p>
+            <h2>Export Matrix</h2>
+            <p class="toolbar-note">The export uses a cleaner summary so the quality review does not overwhelm the item matrix.</p>
+          </div>
+          <div class="button-row">
+            <button id="downloadDocxButton">Download DOCX</button>
+            <button id="printPdfButton" class="secondary">Print / Save as PDF</button>
+          </div>
+        </div>
+        <div id="exportPreview" class="export-preview"></div>
+      </section>
+
+      <section class="view" id="aboutView">
+        <div class="toolbar">
+          <div>
+            <p class="eyebrow">App Notes</p>
+            <h2>Privacy & Sources</h2>
+          </div>
+        </div>
+        <div class="panel form-section">
+          <div class="help-block">
+            <h3>Privacy</h3>
+            <p>This app saves drafts locally in the browser on this computer. It does not need the internet for the current version.</p>
+            <p>Students should export DOCX/PDF copies for permanent submission. Clearing browser data may remove locally saved drafts.</p>
+          </div>
+          <div class="help-block">
+            <h3>Sources and Assessment Basis</h3>
+            <p>The review prompts are informed by classroom assessment principles associated with Stiggins, Popham, Brookhart, McMillan, Nitko, and related assessment literature.</p>
+            <p>The app supports learning and revision. It does not replace teacher feedback, content validation, or instructor judgment.</p>
+          </div>
+          <div class="help-block">
+            <h3>Development Note</h3>
+            <p>This app was developed by J. Arawiran for Assessment classes as a guided item-writing and item-review workspace.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
