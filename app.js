@@ -131,7 +131,7 @@ function isPhoneLayout() {
 function applyMobileStepMode() {
   if (!formSteps.length) return;
   if (isPhoneLayout()) {
-    setMobileStep(mobileStepIndex);
+    syncMobileStep(false);
   }
 }
 
@@ -142,11 +142,17 @@ function setMobileStep(index) {
     return;
   }
   mobileStepIndex = Math.max(0, Math.min(index, formSteps.length - 1));
+  syncMobileStep(true);
+}
+
+function syncMobileStep(shouldScroll) {
   if (isPhoneLayout()) {
     formSteps.forEach((step, stepIndex) => {
       step.open = stepIndex === mobileStepIndex;
     });
-    formSteps[mobileStepIndex]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (shouldScroll) {
+      formSteps[mobileStepIndex]?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   }
   document.querySelector("#mobileStepLabel").textContent = `Step ${mobileStepIndex + 1} of ${formSteps.length}`;
   document.querySelector("#mobileBackButton").disabled = mobileStepIndex === 0;
